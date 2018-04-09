@@ -15,50 +15,50 @@ package org.macalester.edu.comp124.hw5;
  */
 public class TestRecognizer {
 
-//    private Recognizer recognizer;
-//    private List<Point> originalPoints;
-//
-//    private static final int ORIGINAL_N = 20;
-//
-//    @Before
-//    public void setup(){
-//        recognizer = new Recognizer();
-//        originalPoints = new ArrayList<>(ORIGINAL_N);
-//        for(int i=0; i < ORIGINAL_N; i++){
-//            originalPoints.add(new Point(i, 0));
-//        }
-//    }
-//
-//    /**
-//     * Tests that points are resampled correctly
-//     */
-//    @Test
-//    public void testResample(){
-//
-//        int n = 10;
-//        List<Point> resampled = recognizer.resample(originalPoints, n);
-//        assertEquals(n, resampled.size()); // resampling should return the correct number of points
-//
-//        double interval = (ORIGINAL_N-1.0)/(n-1.0); //Path length is 19, so interval should be 19/(n-1) with n=10;
-//
-//        Iterator<Point> it = resampled.iterator();
-//        double i=0;
-//        while (it.hasNext()){
-//            Point point = it.next();
-//            assertEquals(i, point.getX(), 0.01);
-//            assertEquals(0, point.getY(), 0.01);
-//            i+=interval;
-//        }
-//    }
-//
-//    /**
-//     * Tests the path length.
-//     */
-//    @Test
-//    public void testPathLength(){
-//        assertEquals(ORIGINAL_N-1, recognizer.pathLength(originalPoints), 0.0001);
-//        assertEquals(ORIGINAL_N, originalPoints.size());
-//    }
+    private Recognizer recognizer;
+    private List<Point> originalPoints;
+
+    private static final int ORIGINAL_N = 20;
+
+    @Before
+    public void setup(){
+        recognizer = new Recognizer();
+        originalPoints = new ArrayList<>(ORIGINAL_N);
+        for(int i=0; i < ORIGINAL_N; i++){
+            originalPoints.add(new Point(i, 0));
+        }
+    }
+
+    /**
+     * Tests that points are resampled correctly
+     */
+    @Test
+    public void testResample(){
+
+        int n = 10;
+        List<Point> resampled = recognizer.resample(originalPoints, n);
+        assertEquals(n, resampled.size()); // resampling should return the correct number of points
+
+        double interval = (ORIGINAL_N-1.0)/(n-1.0); //Path length is 19, so interval should be 19/(n-1) with n=10;
+
+        Iterator<Point> it = resampled.iterator();
+        double i=0;
+        while (it.hasNext()){
+            Point point = it.next();
+            assertEquals(i, point.getX(), 0.01);
+            assertEquals(0, point.getY(), 0.01);
+            i+=interval;
+        }
+    }
+
+    /**
+     * Tests the path length.
+     */
+    @Test
+    public void testPathLength(){
+        assertEquals(ORIGINAL_N-1, recognizer.pathLength(originalPoints), 0.0001);
+        assertEquals(ORIGINAL_N, originalPoints.size());
+    }
 //
 //    /**
 //     * Tests that the indicative angle (the angle needed to rotate the first point around the centroid to line up with the positive x axis)

@@ -142,7 +142,7 @@ public class GestureWindow extends CanvasWindow implements ActionListener, KeyLi
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        //add path to template
     }
 
     /**
@@ -185,7 +185,6 @@ public class GestureWindow extends CanvasWindow implements ActionListener, KeyLi
         path.add(point);
         Line line = new Line(point.getX(), point.getY(), lastPoint.getX(), lastPoint.getY());
         add(line);
-
     }
 
     /**

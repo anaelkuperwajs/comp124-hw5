@@ -1,10 +1,5 @@
 package org.macalester.edu.comp124.hw5;
 
-import comp124graphics.CanvasWindow;
-import comp124graphics.Ellipse;
-import comp124graphics.GraphicsGroup;
-
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -27,10 +22,55 @@ public class Recognizer {
      */
     public void addTemplate(String name, List<Point> points){
         // TODO: process the points and add them as a template. Use Decomposition!
+         resample(points, 64);
     }
 
     //TODO: Add recognize and other processing methods here
 
+    public List<Point> resample(List<Point> points, int n){
+        double resampleInterval = pathLength(points) / (n-1);
+
+        List<Point> resampledPoints = new ArrayList<>();
+        resampledPoints.add(points.get(0));
+
+        double accumulatedDistance = 0;
+        double segmentDistance;
+
+        for(int i = 1; i < points.size(); i++){
+            Point p = points.get(i);
+            Point previous = points.get(i-1);
+
+            segmentDistance = p.distance(previous);
+
+            if(accumulatedDistance + segmentDistance > resampleInterval){
+                double alpha = (resampleInterval - accumulatedDistance) / segmentDistance;
+                Point interpolated = Point.interpolate(previous, p, alpha);
+                resampledPoints.add(interpolated);
+                points.add(i, interpolated);
+                accumulatedDistance = 0;
+            }
+
+            else{
+                accumulatedDistance += segmentDistance;
+            }
+        }
+
+        if(resampledPoints.size() < n){
+            resampledPoints.add(points.get(points.size()-1));
+        }
+
+        return resampledPoints;
+    }
+
+    public double pathLength(List<Point> points){
+        double totalDistance = 0;
+
+        for(int i = 1; i < points.size(); i++){
+            totalDistance += points.get(i).distance(points.get(i-1));
+        }
+
+        return totalDistance;
+    }
 
     /**
      * Uses a golden section search to calculate rotation that minimizes the distance between the gesture and the template points.

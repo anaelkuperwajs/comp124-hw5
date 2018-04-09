@@ -28,8 +28,8 @@ public class Visualizer extends CanvasWindow {
         drawPath(originalPoints, Color.BLACK);
 
         int n = 25;
-//        List<Point> resampled = recognizer.resample(originalPoints, n);
-//        drawPath(resampled, Color.BLUE);
+        List<Point> resampled = recognizer.resample(originalPoints, n);
+        drawPath(resampled, Color.BLUE);
 //
 //        List<Point> rotated = recognizer.rotateBy(resampled, -recognizer.indicativeAngle(resampled));
 //        drawPath(rotated, Color.RED);
