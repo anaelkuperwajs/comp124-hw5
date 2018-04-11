@@ -22,7 +22,10 @@ public class Recognizer {
      */
     public void addTemplate(String name, List<Point> points){
         // TODO: process the points and add them as a template. Use Decomposition!
-         resample(points, 64);
+         points = resample(points, 64);
+
+         double indicativeAngle = indicativeAngle(points);
+         points = rotateBy(points, -indicativeAngle);
     }
 
     //TODO: Add recognize and other processing methods here
@@ -70,6 +73,36 @@ public class Recognizer {
         }
 
         return totalDistance;
+    }
+
+    public List<Point> rotateBy(List<Point> points, double indicativeAngle){
+
+        List<Point> rotatedPoints = new ArrayList<>();
+        Point centroid = findCentroid(points);
+
+        for(Point current : points){
+            rotatedPoints.add(current.rotate(indicativeAngle, centroid));
+        }
+
+        return rotatedPoints;
+    }
+
+    public Point findCentroid(List<Point> points){
+        double totalX = 0;
+        double totalY = 0;
+
+        for(int i = 0; i < points.size(); i++){
+            totalX += points.get(i).getX();
+            totalY += points.get(i).getY();
+        }
+
+        return new Point(totalX / points.size(), totalY / points.size());
+    }
+
+    public double indicativeAngle(List<Point> points){
+        Point centroid = findCentroid(points);
+        Point vector = centroid.subtract(points.get(0));
+        return vector.angle();
     }
 
     /**
