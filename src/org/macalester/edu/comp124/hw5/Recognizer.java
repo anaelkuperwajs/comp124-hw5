@@ -26,6 +26,7 @@ public class Recognizer {
 
          double indicativeAngle = indicativeAngle(points);
          points = rotateBy(points, -indicativeAngle);
+         //points = scaleTo(points);
     }
 
     //TODO: Add recognize and other processing methods here
@@ -103,6 +104,43 @@ public class Recognizer {
         Point centroid = findCentroid(points);
         Point vector = centroid.subtract(points.get(0));
         return vector.angle();
+    }
+
+    public List<Point> scaleTo(List<Point> points){
+        int size = 250;
+        Point min = findMin(points);
+        Point max = findMax(points);
+
+        double width = max.getX() - min.getX();
+        double height = max.getY() - min.getY();
+
+        List<Point> scaledPoints = new ArrayList<>();
+
+        for(Point current : points){
+            scaledPoints.add(current.scale(size/width, size/height));
+        }
+
+        return scaledPoints;
+    }
+
+    public Point findMin(List<Point> points){
+        Point min = points.get(0);
+
+        for(Point current : points){
+            min = Point.min(min, current);
+        }
+
+        return min;
+    }
+
+    public Point findMax(List<Point> points){
+        Point max = points.get(0);
+
+        for(Point current : points){
+            max = Point.max(max, current);
+        }
+
+        return max;
     }
 
     /**

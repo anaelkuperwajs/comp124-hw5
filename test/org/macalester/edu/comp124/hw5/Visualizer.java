@@ -33,7 +33,7 @@ public class Visualizer extends CanvasWindow {
 
         List<Point> rotated = recognizer.rotateBy(resampled, -recognizer.indicativeAngle(resampled));
         drawPath(rotated, Color.RED);
-//
+
 //        List<Point> scaled = recognizer.scaleTo(rotated, 100);
 //        drawPath(scaled, Color.GREEN);
 //
