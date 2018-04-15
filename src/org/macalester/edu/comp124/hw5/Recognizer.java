@@ -26,7 +26,12 @@ public class Recognizer {
 
          double indicativeAngle = indicativeAngle(points);
          points = rotateBy(points, -indicativeAngle);
-         //points = scaleTo(points);
+
+         int size = 250;
+         points = scaleTo(points, size);
+
+         Point translate = new Point(0.0, 0.0);
+         points = translateTo(points, translate);
     }
 
     //TODO: Add recognize and other processing methods here
@@ -106,8 +111,7 @@ public class Recognizer {
         return vector.angle();
     }
 
-    public List<Point> scaleTo(List<Point> points){
-        int size = 250;
+    public List<Point> scaleTo(List<Point> points, int size){
         Point min = findMin(points);
         Point max = findMax(points);
 
@@ -141,6 +145,18 @@ public class Recognizer {
         }
 
         return max;
+    }
+
+    public List<Point> translateTo(List<Point> points, Point translate){
+        Point centroid = findCentroid(points);
+        List<Point> translated = new ArrayList<>();
+
+        for(Point current : points){
+            Point point = new Point(current.getX() + translate.getX() - centroid.getX(), current.getY() + translate.getY() - centroid.getY());
+            translated.add(point);
+        }
+
+        return translated;
     }
 
     /**

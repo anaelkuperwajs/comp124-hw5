@@ -34,11 +34,11 @@ public class Visualizer extends CanvasWindow {
         List<Point> rotated = recognizer.rotateBy(resampled, -recognizer.indicativeAngle(resampled));
         drawPath(rotated, Color.RED);
 
-//        List<Point> scaled = recognizer.scaleTo(rotated, 100);
-//        drawPath(scaled, Color.GREEN);
-//
-//        List<Point> translated = recognizer.translateTo(scaled, new Point(0.0,0.0));
-//        drawPath(translated, Color.MAGENTA);
+        List<Point> scaled = recognizer.scaleTo(rotated, 100);
+        drawPath(scaled, Color.GREEN);
+
+        List<Point> translated = recognizer.translateTo(scaled, new Point(0.0,0.0));
+        drawPath(translated, Color.MAGENTA);
     }
 
     private void drawLegend(){
