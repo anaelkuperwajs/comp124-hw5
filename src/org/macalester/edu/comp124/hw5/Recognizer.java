@@ -8,10 +8,14 @@ import java.util.List;
  */
 public class Recognizer {
 
+    private List<Template> savedTemplates;
+    private final int SIZE = 250;
+
     /**
      * Constructs a recognizer object
      */
     public Recognizer(){
+        savedTemplates = new ArrayList<>();
     }
 
 
@@ -22,19 +26,58 @@ public class Recognizer {
      */
     public void addTemplate(String name, List<Point> points){
         // TODO: process the points and add them as a template. Use Decomposition!
-         points = resample(points, 64);
+         points = analyzeGesture(points);
 
-         double indicativeAngle = indicativeAngle(points);
-         points = rotateBy(points, -indicativeAngle);
-
-         int size = 250;
-         points = scaleTo(points, size);
-
-         Point translate = new Point(0.0, 0.0);
-         points = translateTo(points, translate);
+         //add as a template
+        Template template = new Template(name, points);
+        savedTemplates.add(template);
     }
 
     //TODO: Add recognize and other processing methods here
+
+    public boolean checkEmpty(){
+        return savedTemplates.size() == 0;
+    }
+
+    public MatchScore recognize(List<Point> points){
+        points = analyzeGesture(points);
+
+        double minDistance = distanceAtBestAngle(points, savedTemplates.get(0).getTemplatePoints());
+        Template bestTemplate = savedTemplates.get(0);
+        double distance;
+
+        //golden section search
+        for(int i=1; i<savedTemplates.size(); i++){
+
+            distance = distanceAtBestAngle(points, savedTemplates.get(i).getTemplatePoints());
+
+            if(distance < minDistance){
+                minDistance = distance;
+                bestTemplate = savedTemplates.get(i);
+            }
+        }
+
+        double score = findScore(minDistance);
+        return new MatchScore(score, bestTemplate);
+    }
+
+    public double findScore(double distance){
+        return 1 - ((distance) / ( 0.5 * Math.sqrt(Math.pow(SIZE, 2) + Math.pow(SIZE, 2))));
+    }
+
+    public List<Point> analyzeGesture(List<Point> points){
+        points = resample(points, 64);
+
+        double indicativeAngle = indicativeAngle(points);
+        points = rotateBy(points, -indicativeAngle);
+
+        points = scaleTo(points, SIZE);
+
+        Point translate = new Point(0.0, 0.0);
+        points = translateTo(points, translate);
+
+        return points;
+    }
 
     public List<Point> resample(List<Point> points, int n){
         double resampleInterval = pathLength(points) / (n-1);
@@ -196,14 +239,22 @@ public class Recognizer {
     private double distanceAtAngle(List<Point> points, List<Point> templatePoints, double theta){
         //TODO: Uncomment after rotate method is implemented
         List<Point> rotatedPoints = null;
-        // rotatedPoints = rotateBy(points, theta);
+        rotatedPoints = rotateBy(points, theta);
         return pathDistance(rotatedPoints, templatePoints);
     }
 
     private double pathDistance(List<Point> a, List<Point> b){
 
         //TODO: implement the method and return the correct distance
-        return 0;
+        double distance = 0;
+
+        for(int i=0; i<a.size(); i++){
+            distance += a.get(i).distance(b.get(i));
+        }
+
+        distance /= a.size();
+
+        return distance;
     }
 
 

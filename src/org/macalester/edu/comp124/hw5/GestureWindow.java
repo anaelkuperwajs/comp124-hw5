@@ -142,7 +142,14 @@ public class GestureWindow extends CanvasWindow implements ActionListener, KeyLi
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        //add path to template
+        if(recognizer.checkEmpty()){
+            matchLabel.setText("No templates added. Please add a template.");
+        }
+
+        else{
+            MatchScore matchScore = recognizer.recognize(path);
+            matchLabel.setText(matchScore.getScore() + " " + matchScore.getTemplate().getName());
+        }
     }
 
     /**
