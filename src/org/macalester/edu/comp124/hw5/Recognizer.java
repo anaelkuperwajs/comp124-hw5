@@ -35,10 +35,20 @@ public class Recognizer {
 
     //TODO: Add recognize and other processing methods here
 
+    /**
+     * checks if there are any saved templates
+     * @return boolean based on if the saved templates list is empty
+     */
     public boolean checkEmpty(){
         return savedTemplates.size() == 0;
     }
 
+    /**
+     * uses the golden section search to look at the gesture and compare it to the saved templates
+     * in order to create a mathscore (the matching template and the score associated with it)
+     * @param points
+     * @return the matchscore
+     */
     public MatchScore recognize(List<Point> points){
         points = analyzeGesture(points);
 
@@ -61,10 +71,20 @@ public class Recognizer {
         return new MatchScore(score, bestTemplate);
     }
 
+    /**
+     * finds the score of the template vs the gesture
+     * @param distance
+     * @return score
+     */
     public double findScore(double distance){
         return 1 - ((distance) / ( 0.5 * Math.sqrt(Math.pow(SIZE, 2) + Math.pow(SIZE, 2))));
     }
 
+    /**
+     * analyzes the gesture to later be able to compare them. Uses the steps resample, rotate, scale, and translate
+     * @param points
+     * @return the analyzed list of points
+     */
     public List<Point> analyzeGesture(List<Point> points){
         points = resample(points, 64);
 
@@ -114,6 +134,11 @@ public class Recognizer {
         return resampledPoints;
     }
 
+    /**
+     * finds the total distance of the gesture
+     * @param points
+     * @return
+     */
     public double pathLength(List<Point> points){
         double totalDistance = 0;
 
@@ -148,6 +173,11 @@ public class Recognizer {
         return new Point(totalX / points.size(), totalY / points.size());
     }
 
+    /**
+     * finds the angle that is used to rotate the gesture
+     * @param points
+     * @return the angle
+     */
     public double indicativeAngle(List<Point> points){
         Point centroid = findCentroid(points);
         Point vector = centroid.subtract(points.get(0));
@@ -170,6 +200,11 @@ public class Recognizer {
         return scaledPoints;
     }
 
+    /**
+     * finds the minimum value to use in scale
+     * @param points
+     * @return the point that holds the minimum values
+     */
     public Point findMin(List<Point> points){
         Point min = points.get(0);
 
@@ -180,6 +215,11 @@ public class Recognizer {
         return min;
     }
 
+    /**
+     * finds the maximum value to use in scale
+     * @param points
+     * @return the point that holds the maximum values
+     */
     public Point findMax(List<Point> points){
         Point max = points.get(0);
 

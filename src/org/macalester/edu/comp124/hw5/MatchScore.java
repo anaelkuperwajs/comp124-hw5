@@ -1,5 +1,9 @@
 package org.macalester.edu.comp124.hw5;
 
+/**
+ * an object that stores the best template match and the score of that match
+ */
+
 public class MatchScore {
 
     private double score;
