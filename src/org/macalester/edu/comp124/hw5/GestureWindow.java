@@ -131,6 +131,7 @@ public class GestureWindow extends CanvasWindow implements ActionListener, KeyLi
     @Override
     public void mousePressed(MouseEvent e) {
         removeAll();
+        path.clear();
         Point point = new Point(e.getX(), e.getY());
         path.add(point);
     }
